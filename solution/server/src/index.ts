@@ -4,6 +4,7 @@ import { notFoundHandler } from "./middleware/not-found.middleware";
 import { errorHandler } from "./middleware/error.middleware";
 import { routes } from "./features/routes";
 import xmlparser from "express-xml-bodyparser";
+import cors from 'cors';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use("/", routes);
 app.use(express.static("public"));
 app.use(errorHandler);
 app.use(notFoundHandler);
+app.use(cors());
 
 // start server
 app.listen(PORT, () =>
