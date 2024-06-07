@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { createItem, Item, NewItem} from './itemService';
 import { 
-  Box,
+  TableRow,
+  TableCell,
   TextField,
   Button
 } from '@mui/material';
@@ -27,22 +28,27 @@ const CreateItem: React.FC<CreateItemProps> = ({ onItemCreated }) => {
       };
 
     return (
-        <Box component="form" noValidate autoComplete="off" sx={{ marginBottom: 2 }}>
-            <TextField
+      <TableRow key={-1}>
+        <TableCell>
+          <TextField
             label="Item Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             margin="normal"
             fullWidth
-            />
-            <TextField
+        />
+        </TableCell>
+        <TableCell>
+          <TextField
             label="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             margin="normal"
             fullWidth
             />
-            <Button
+        </TableCell>
+        <TableCell>
+          <Button
             variant="contained"
             color="primary"
             onClick={handleCreateItem}
@@ -50,7 +56,8 @@ const CreateItem: React.FC<CreateItemProps> = ({ onItemCreated }) => {
             >
             Create Item
             </Button>
-        </Box>
+        </TableCell>
+      </TableRow>
     );
 };
 

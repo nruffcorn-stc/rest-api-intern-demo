@@ -32,3 +32,12 @@ export const createItem = async (item: NewItem): Promise<Item> => {
     throw error;
   }
 };
+
+export const deleteItem = async (id: number): Promise<void> => {
+  try {
+    await axios.delete(API_URL + '/' + id);
+  } catch (error) {
+    console.error('Error deleting item:', error);
+    throw error;
+  }
+};
