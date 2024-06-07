@@ -5,13 +5,14 @@ import {
   TableBody, 
   TableCell, 
   TableContainer, 
-  TableHead, 
+  TableHead,
   TableRow, 
   Paper, 
-  CircularProgress 
+  CircularProgress
 } from '@mui/material';
+import CreateItem from './createItem';
 
-const Customers: React.FC = () => {
+const Items: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [items, setItems] = useState<Item[]>([]);
   
@@ -30,6 +31,10 @@ const Customers: React.FC = () => {
     fetchItems();
   }, []);
 
+  const handleItemCreated = (newItem: Item) => {
+    setItems([...items, newItem]);
+  };
+
   if (loading) {
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><CircularProgress /></div>;
   }
@@ -37,6 +42,7 @@ const Customers: React.FC = () => {
   return (
     <div>
       <h1>Items</h1>
+      <CreateItem onItemCreated={handleItemCreated} />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -59,4 +65,4 @@ const Customers: React.FC = () => {
   );
 };
 
-export default Customers;
+export default Items;

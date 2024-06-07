@@ -8,12 +8,27 @@ export type Item = {
   imageUrl?: string;
 };
 
+export type NewItem = {
+  name: string;
+  description: string;
+};
+
 export const getItems = async (): Promise<Item[]> => {
   try {
     const response = await axios.get<Item[]>(API_URL);
     return response.data;
   } catch (error) {
     console.error('Error fetching items:', error);
+    throw error;
+  }
+};
+
+export const createItem = async (item: NewItem): Promise<Item> => {
+  try {
+    const response = await axios.post<Item>(API_URL, item);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating item:', error);
     throw error;
   }
 };
