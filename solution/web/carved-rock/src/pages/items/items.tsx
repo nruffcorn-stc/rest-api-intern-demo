@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getItems, Item } from './itemService';
+import { getItems, deleteItem, Item } from './itemService';
+import CreateItem from './createItem';
 import { 
   Table, 
   TableBody, 
@@ -8,9 +9,10 @@ import {
   TableHead,
   TableRow, 
   Paper, 
-  CircularProgress
+  CircularProgress,
+  IconButton
 } from '@mui/material';
-import CreateItem from './createItem';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const Items: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
@@ -27,13 +29,22 @@ const Items: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    fetchItems();
-  }, []);
-
   const handleItemCreated = (newItem: Item) => {
     setItems([...items, newItem]);
   };
+
+  const handleDeleteItem = async (id: number) => {
+    try {
+      await deleteItem(id);
+      setItems(items.filter(item => item.id !== id));
+    } catch (error) {
+      console.error('Failed to delete customer:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
   if (loading) {
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><CircularProgress /></div>;
@@ -42,20 +53,29 @@ const Items: React.FC = () => {
   return (
     <div>
       <h1>Items</h1>
-      <CreateItem onItemCreated={handleItemCreated} />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Image</TableCell>
               <TableCell>Name</TableCell>
+              <TableCell>&nbsp;</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
+            <CreateItem onItemCreated={handleItemCreated} />
             {items.map((item) => (
               <TableRow key={item.id}>
                 <TableCell><img src={item?.imageUrl} style={{ maxWidth: 100 }}/></TableCell>
                 <TableCell>{item.name}</TableCell>
+                <TableCell>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleDeleteItem(item.id!)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
