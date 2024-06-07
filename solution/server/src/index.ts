@@ -4,7 +4,7 @@ import { notFoundHandler } from "./middleware/not-found.middleware";
 import { errorHandler } from "./middleware/error.middleware";
 import { routes } from "./features/routes";
 import xmlparser from "express-xml-bodyparser";
-import cors from 'cors';
+import cors from "cors";
 
 dotenv.config();
 
@@ -15,6 +15,7 @@ if (!process.env.PORT) {
 const PORT = parseInt(process.env.PORT, 10);
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(xmlparser({ explicitArray: false, explicitRoot: false }));
 
@@ -25,7 +26,6 @@ app.use("/", routes);
 app.use(express.static("public"));
 app.use(errorHandler);
 app.use(notFoundHandler);
-app.use(cors());
 
 // start server
 app.listen(PORT, () =>
